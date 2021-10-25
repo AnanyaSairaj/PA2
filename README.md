@@ -30,3 +30,24 @@ This server implementation handles the 500 Internal server errors .
 ## IMPLEMENTING PIPELING 
  
  This server is also designed to support persistent connections. This means that after the results of a single request is returned it needs to leave the connection over for some period of time so as to allow the client to reuse that socket. It does this by parsing the client request immediately after it has arrived for the presence of the string "Connection : keep-alive". If this is present then it sets the time out value for the SETSOCKPOPT to 10 secs .If the keep-alive string is not present then it sets the timeout value for SETSOCKOPT as 0 and sends "Connection : Closed" in the response header to the client.This means if the keep-alive is not present in the request then the socket is immediately closed after handling a request .
+ 
+ ## TESTING
+ 
+ ### TO TEST USING THE BROWSER:
+ 
+ ```
+ http://localhost:<Port number>/index.html
+ 
+ ```
+ 
+### TO TEST USING TELNET
+
+ ```
+ 
+ GET - (echo -en "GET /index.html HTTP/1.1\nHost: localhost\nConnection: keep-alive\n\n"; sleep 5) | telnet 127.0.0.1 <Port number>
+
+POST - (echo -en "POST /test.html HTTP/1.1\nHost: localhost\nConnection: keep-alive\n\n<Any message string>"; sleep 5) | telnet 127.0.0.1 <Port number>
+
+Multiple GET requests to check pipelining - (echo -en "GET /test.html HTTP/1.1\nHost: localhost\nConnection: keep-alive\n\n"; sleep 5; echo -en "GET /test1.html HTTP/1.1\nHost: localhost\nConnection: keep-alive\n\n"; sleep 5) | telnet 127.0.0.1 <Port Number>
+
+  ```
