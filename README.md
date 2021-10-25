@@ -30,7 +30,19 @@ This server implementation handles the 500 Internal server errors .
 ## IMPLEMENTING PIPELING 
  
  This server is also designed to support persistent connections. This means that after the results of a single request is returned it needs to leave the connection over for some period of time so as to allow the client to reuse that socket. It does this by parsing the client request immediately after it has arrived for the presence of the string "Connection : keep-alive". If this is present then it sets the time out value for the SETSOCKPOPT to 10 secs .If the keep-alive string is not present then it sets the timeout value for SETSOCKOPT as 0 and sends "Connection : Closed" in the response header to the client.This means if the keep-alive is not present in the request then the socket is immediately closed after handling a request .
- 
+
+## SERVER EXECUTION 
+
+### TO BUILD
+
+```
+*  Go to the project folder, cd [FolderName]/
+* Run make 
+*./server [PORT NUMBER]
+
+
+```
+
  ## TESTING
  
  ### TO TEST USING THE BROWSER:
