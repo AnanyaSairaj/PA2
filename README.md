@@ -27,4 +27,6 @@ This server implementation handles the 500 Internal server errors .
 * INVALID HTTP VERSION: This server accepts only HTTP versions 1.1 and 1.0. If the client uses any pther version for the request it throws an error saying BAD REQUEST: INVALID VERSION implying the HTTP version.
 * INVALID URL: The server checks the url path sent in the client request and with the acess function and if it does not return F_OK then it throws a BAD REQUEST:INVALID URL error to let the client know of the error in accessing the file from the specified path.
 
-
+## IMPLEMENTING PIPELING 
+ 
+ This server is also designed to support persistent connections. This means that after the results of a single request is returned it needs to leave the connection over for some period of time so as to allow the client to reuse that socket. It does this by parsing the client request immediately after it has arrived for the presence of the string "Connection : keep-alive". If this is present then it sets the time out value for the SETSOCKPOPT to 10 secs .If the keep-alive string is not present then it sets the timeout value for SETSOCKOPT as 0 and sends "Connection : Closed" in the response header to the client.This means if the keep-alive is not present in the request then the socket is immediately closed after handling a request .
